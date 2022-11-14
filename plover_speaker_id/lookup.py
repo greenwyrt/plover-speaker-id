@@ -1,7 +1,7 @@
 from plover.oslayer.config import CONFIG_DIR
 import json
 import pathlib
-spkr_dict_path = pathlib.Path(CONFIG_DIR) / "spkr.json"
+SPKR_DICT_PATH = pathlib.Path(CONFIG_DIR) / "spkr.json"
 
 DEFAULT_SPEAKERS = {
   1: "Mr. Stphao",
@@ -21,10 +21,10 @@ DEFAULT_SPEAKERS = {
 class SpeakerTable:
   def __init__(self):
     self._speakers = DEFAULT_SPEAKERS
-    if not spkr_dict_path.exists():
+    if not SPKR_DICT_PATH.exists():
         self.save()
     else:
-        with open(spkr_dict_path, "r") as f:
+        with open(SPKR_DICT_PATH, "r") as f:
             self._speakers = json.loads(f.read(), object_hook=lambda d: {int(k) if k.lstrip('-').isdigit() else k: v for k, v in d.items()})
 
   def __getitem__(self, id: int) -> str:
@@ -34,7 +34,7 @@ class SpeakerTable:
     self._speakers[id] = name
 
   def save(self):
-    with open(spkr_dict_path, "w") as f:
+    with open(SPKR_DICT_PATH, "w") as f:
       json.dump(self._speakers, f)    
 
 spkr_table = SpeakerTable()
